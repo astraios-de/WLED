@@ -434,6 +434,20 @@ uint16_t mode_rainbow(void) {
 }
 static const char _data_FX_MODE_RAINBOW[] PROGMEM = "Colorloop@!,Saturation;;!;01";
 
+uint16_t mode_letterlampe_test(void) {
+  uint16_t counter = (strip.now * ((SEGMENT.speed >> 2) +2)) & 0xFFFF;
+  counter = counter >> 8;
+
+  if (SEGMENT.intensity < 128){
+    SEGMENT.fill(color_blend(SEGMENT.color_wheel(counter),WHITE,128-SEGMENT.intensity));
+  } else {
+    SEGMENT.fill(SEGMENT.color_wheel(counter));
+  }
+
+  return FRAMETIME;
+}
+static const char _data_FX_MODE_LETTERLAMPE_TEST[] PROGMEM = "LetterlampeTest@!,Saturation;;!;01";
+
 
 /*
  * Cycles a rainbow over the entire string of LEDs.
@@ -7703,6 +7717,9 @@ void WS2812FX::setupEffectData() {
   addEffect(FX_MODE_COLOR_SWEEP, &mode_color_sweep, _data_FX_MODE_COLOR_SWEEP);
   addEffect(FX_MODE_DYNAMIC, &mode_dynamic, _data_FX_MODE_DYNAMIC);
   addEffect(FX_MODE_RAINBOW, &mode_rainbow, _data_FX_MODE_RAINBOW);
+  
+  addEffect(FX_MODE_LETTERLAMPE_TEST, &mode_letterlampe_test, _data_FX_MODE_LETTERLAMPE_TEST);
+  
   addEffect(FX_MODE_RAINBOW_CYCLE, &mode_rainbow_cycle, _data_FX_MODE_RAINBOW_CYCLE);
   addEffect(FX_MODE_SCAN, &mode_scan, _data_FX_MODE_SCAN);
   addEffect(FX_MODE_DUAL_SCAN, &mode_dual_scan, _data_FX_MODE_DUAL_SCAN);
